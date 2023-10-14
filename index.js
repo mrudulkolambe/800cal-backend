@@ -11,6 +11,7 @@ const riderRouter = require('./routes/Rider');
 const restaurantCategoryRouter = require('./routes/RestaurantCategory');
 const ingredientsRouter = require('./routes/Ingredients');
 const foodRouter = require('./routes/Food');
+const transactionRouter = require('./routes/Transaction');
 
 const app = express();
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/meal", mealRouter);
 app.use("/resto-category", restaurantCategoryRouter);
 app.use("/ingredients", ingredientsRouter);
 app.use("/food", foodRouter);
+app.use("/customer-transaction", transactionRouter);
 
 app.get("/", (req, res) => {
 	res.send("Server Is Live!")
