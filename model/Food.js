@@ -41,6 +41,10 @@ const Food = new mongoose.Schema({
 	popular: {
 		type: Boolean,
 		default: false
+	},
+	category: {
+		type: String,
+		required: true
 	}
 }, { timestamps: true })
 
