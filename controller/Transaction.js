@@ -27,7 +27,7 @@ const createTransaction = async (req, res) => {
 
 const getCustomerTransactions = async (req, res) => {
 	try {
-		const transactions = await Transactions.find({ customers: req.customer._id }).populate("customers").sort({'time_stamp': -1})
+		const transactions = await Transactions.find({ customers: req.customer._id }).populate("customers").sort({ 'time_stamp': 1 })
 		if (transactions) {
 			return res.json({
 				error: true,
