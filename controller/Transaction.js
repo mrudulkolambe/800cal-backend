@@ -1,8 +1,14 @@
 const Transactions = require("../model/Transactions");
+const Customer = require("../model/Customer");
 
 
 const createTransaction = async (req, res) => {
 	try {
+		if (req.body.debited) {
+			const user = await Customer.findByIdAndUpdate(req.customer._id, { $inc: { balance: -req.body.amount } })
+		} else {
+			const user = await Customer.findByIdAndUpdate(req.customer._id, { $inc: { balance: req.body.amount } })
+		}
 		const newTransaction = new Transactions({ ...req.body, customers: req.customer._id });
 		const savedTransaction = await newTransaction.save();
 		if (savedTransaction) {
@@ -27,7 +33,7 @@ const createTransaction = async (req, res) => {
 
 const getCustomerTransactions = async (req, res) => {
 	try {
-		const transactions = await Transactions.find({ customers: req.customer._id }).populate("customers").sort({'time_stamp': -1})
+		const transactions = await Transactions.find({ customers: req.customer._id }).populate("customers").sort({ 'time_stamp': -1 })
 		if (transactions) {
 			return res.json({
 				error: true,
