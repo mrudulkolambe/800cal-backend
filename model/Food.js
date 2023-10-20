@@ -50,6 +50,15 @@ const Food = new mongoose.Schema({
 		type: String,
 		required: true,
 		default: ""
+	},
+	foodcode: {
+		type: String,
+		required: true,
+	},
+	featured: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 }, { timestamps: true })
 

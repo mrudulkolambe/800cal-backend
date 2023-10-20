@@ -9,6 +9,25 @@ const Ingredients = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	location: {
+		type: String,
+		required: true
+	},
+	weight: {
+		type: String,
+	},
+	protien: {
+		type: String,
+	},
+	fat: {
+		type: String,
+	},
+	carbs: {
+		type: String,
+	},
+	calories: {
+		type: String,
+	},
 }, {timestamps: true})
 
 

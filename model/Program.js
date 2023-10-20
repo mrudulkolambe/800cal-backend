@@ -26,6 +26,9 @@ const Program = new mongoose.Schema({
 	popular: {
 		type: Boolean,
 		default: false
+	},
+	kcal: {
+		type: String,
 	}
 }, { timestamps: true })
 

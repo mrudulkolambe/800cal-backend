@@ -23,6 +23,9 @@ const Meals = new mongoose.Schema({
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "programs",
 		required: true
+	},
+	kcal: {
+		type: String,
 	}
 }, { timestamps: true })
 
