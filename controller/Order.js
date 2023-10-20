@@ -7,7 +7,7 @@ const createOrder = async (req, res) => {
     const savedOrder = await neworder.save();
     if (savedOrder) {
       return res.json({
-        error: true,
+        error: false,
         message: "Subscription Created Successfully!",
         subscription: savedOrder
       })
@@ -30,7 +30,7 @@ const getUserOrders = async (req, res) => {
     const orders = await Order.find({customer: req.customer._id}).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password")
     if(orders){
       return res.json({
-        error: true,
+        error: false,
         message: "Subscription Fetched Successfully!",
         subscriptions: orders
       })
@@ -55,7 +55,7 @@ const getUserOrderById = async (req, res) => {
     const calendars = await Calendar.find({order: order._id}).populate("meals").populate("program").populate("restaurant","-password").populate("customer", "-password");
     if(order && calendars){
       return res.json({
-        error: true,
+        error: false,
         message: "Fetched Successfully!",
         subscription: {...order.toObject(), calendar: calendars}
       })

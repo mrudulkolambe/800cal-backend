@@ -6,7 +6,7 @@ const createCalendarDate = async (req, res) => {
     const savedcalendar = await newcalendardate.save();
     if (savedcalendar) {
       return res.json({
-        error: true,
+        error: false,
         message: "Created Successfully",
         calendar: savedcalendar
       })
