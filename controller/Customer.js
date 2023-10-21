@@ -89,7 +89,7 @@ const getCustomerProfileByToken = async (req, res) => {
 	try {
 		const { _id } = req.customer;
 		if (_id) {
-			const customer = await Customer.findById(_id, { password: 0 }).populate("allergy");
+			const customer = await Customer.findById(_id, { password: 0 });
 			if (customer) {
 				return res.json({
 					error: false,
