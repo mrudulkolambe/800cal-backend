@@ -59,6 +59,10 @@ const Customer = new mongoose.Schema({
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: "ingredients"
 	},
+	dislikes: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		ref: "ingredients"
+	},
 	image: {
 		type: String,
 		default: "",

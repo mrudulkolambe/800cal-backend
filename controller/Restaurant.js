@@ -271,15 +271,18 @@ const getRestaurantsByGroup = async (req, res) => {
 				data: {
 					gold: {
 						price: goldcategory.price,
-						restaurants: goldrestaurants
+						restaurants: goldrestaurants,
+						_id: goldcategory._id
 					},
 					silver: {
 						price: silvercategory.price,
-						restaurants: silverrestaurants
+						restaurants: silverrestaurants,
+						_id: silvercategory._id
 					},
 					platinum: {
 						price: platinumcategory.price,
-						restaurants: platinumrestaurants
+						restaurants: platinumrestaurants,
+						_id: platinumcategory._id
 					},
 				}
 			})
