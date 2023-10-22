@@ -49,33 +49,9 @@ const getUserOrders = async (req, res) => {
   }
 }
 
-const getNewOrders = async (req, res) => {
+const getOrdersByCategory = async (req, res) => {
   try {
-    const orders = await Order.find({ order_status: "new" }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
-    if (orders) {
-      return res.json({
-        error: false,
-        message: "Subscription Fetched Successfully!",
-        subscriptions: orders
-      })
-    } else {
-      return res.json({
-        error: true,
-        message: "Something went wrong!",
-        subscriptions: []
-      })
-    }
-  } catch (error) {
-    return res.json({
-      error: true,
-      message: error.message,
-    })
-  }
-}
-
-const getAllOrders = async (req, res) => {
-  try {
-    const orders = await Order.find({}).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+    const orders = await Order.find({ order_status: req.params.category }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
     if (orders) {
       return res.json({
         error: false,
@@ -123,4 +99,4 @@ const getUserOrderById = async (req, res) => {
 }
 
 
-module.exports = { createOrder, getUserOrders, getUserOrderById, getNewOrders, getAllOrders }
+module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory }
