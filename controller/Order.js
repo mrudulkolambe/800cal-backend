@@ -51,7 +51,12 @@ const getUserOrders = async (req, res) => {
 
 const getOrdersByCategory = async (req, res) => {
   try {
-    const orders = await Order.find({ order_status: req.params.category }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+    let orders = []
+    if (req.params.category === "all") {
+      orders = await Order.find().populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+    } else {
+      orders = await Order.find({ order_status: req.params.category }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+    }
     if (orders) {
       return res.json({
         error: false,
