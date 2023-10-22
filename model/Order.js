@@ -27,9 +27,9 @@ const OrderSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  // discount: {
-  //   type: mongoose.SchemaTypes.ObjectId,
-  // },
+  discount: {
+    type: mongoose.SchemaTypes.ObjectId,
+  },
   subtotal: {
     type: Number,
     default: 0
@@ -65,6 +65,7 @@ const OrderSchema = new mongoose.Schema({
   },
   order_status: {
     type: String,
+    default: "new"
   },
   program: {
     type: mongoose.SchemaTypes.ObjectId,

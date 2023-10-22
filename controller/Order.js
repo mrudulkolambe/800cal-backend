@@ -27,14 +27,38 @@ const createOrder = async (req, res) => {
 
 const getUserOrders = async (req, res) => {
   try {
-    const orders = await Order.find({customer: req.customer._id}).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password")
-    if(orders){
+    const orders = await Order.find({ customer: req.customer._id }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password").sort({ timestamp: 'desc' })
+    if (orders) {
       return res.json({
         error: false,
         message: "Subscription Fetched Successfully!",
         subscriptions: orders
       })
-    }else{
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong!",
+        subscriptions: []
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
+
+const getNewOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ order_status: "new" }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+    if (orders) {
+      return res.json({
+        error: false,
+        message: "Subscription Fetched Successfully!",
+        subscriptions: orders
+      })
+    } else {
       return res.json({
         error: true,
         message: "Something went wrong!",
@@ -51,15 +75,15 @@ const getUserOrders = async (req, res) => {
 
 const getUserOrderById = async (req, res) => {
   try {
-    const order = await Order.findOne({_id: req.params._id}).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password");
-    const calendars = await Calendar.find({order: order._id}).populate("meals").populate("program").populate("restaurant","-password").populate("customer", "-password");
-    if(order && calendars){
+    const order = await Order.findOne({ _id: req.params._id }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password");
+    const calendars = await Calendar.find({ order: order._id }).populate("meals").populate("program").populate("restaurant", "-password").populate("customer", "-password");
+    if (order && calendars) {
       return res.json({
         error: false,
         message: "Fetched Successfully!",
-        subscription: {...order.toObject(), calendar: calendars}
+        subscription: { ...order.toObject(), calendar: calendars }
       })
-    }else{
+    } else {
       return res.json({
         error: true,
         message: "Something went wrong!",
@@ -75,4 +99,4 @@ const getUserOrderById = async (req, res) => {
 }
 
 
-module.exports = { createOrder, getUserOrders, getUserOrderById }
+module.exports = { createOrder, getUserOrders, getUserOrderById, getNewOrders }

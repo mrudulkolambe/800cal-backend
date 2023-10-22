@@ -164,4 +164,4 @@ const getAllCustomers = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getAllCustomers };
+module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getAllCustomers };	
