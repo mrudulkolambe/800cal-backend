@@ -31,7 +31,7 @@ const ViewAllPrograms = async (req, res) => {
 		if (programs) {
 			return res.json({
 				error: false,
-				message: "Created Successfully!",
+				message: "Fetched Successfully!",
 				program: programs
 			})
 		} else {

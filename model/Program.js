@@ -28,7 +28,7 @@ const Program = new mongoose.Schema({
 		default: false
 	},
 	kcal: {
-		type: String,
+		type: Number,
 	}
 }, { timestamps: true })
 

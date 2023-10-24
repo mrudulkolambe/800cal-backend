@@ -24,6 +24,29 @@ const createCalendarDate = async (req, res) => {
   }
 }
 
+const getCalendarByCategory = async (req, res) => {
+  try {
+    const calendar = await Calendar.find().populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password");
+    if (calendar) {
+      return res.json({
+        error: false,
+        message: "Fetched Successfully!",
+        calendar: calendar
+      })
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong",
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
 
 
-module.exports = { createCalendarDate };
+
+module.exports = { createCalendarDate, getCalendarByCategory };

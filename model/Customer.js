@@ -3,11 +3,8 @@ const mongoose = require("mongoose");
 const Customer = new mongoose.Schema({
 	username: {
 		type: String,
-		required: [true, 'Why no bacon?'],
-		unique: 'Two users cannot share the same username ({VALUE})',
-		index: {
-			unique: 'Two users cannot share the same username ({VALUE})',
-		},
+		required: true,
+		unique: true,
 		trim: true
 	},
 	email: {

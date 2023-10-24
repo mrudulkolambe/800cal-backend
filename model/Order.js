@@ -9,7 +9,6 @@ const OrderSchema = new mongoose.Schema({
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "customers",
-    required: true
   },
   startDate: {
     type: Number,
