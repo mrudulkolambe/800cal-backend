@@ -72,6 +72,14 @@ const Customer = new mongoose.Schema({
 		type: Number,
 		default: 0,
 		required: true
+	},
+	isSubscribed: {
+		type: Boolean,
+		default: false
+	},
+	subscriptionEndDate: {
+		type: Number,
+		default: 0
 	}
 }, { timestamps: true })
 
