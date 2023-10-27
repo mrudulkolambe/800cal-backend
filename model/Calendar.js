@@ -38,6 +38,18 @@ const CalendarSchema = new mongoose.Schema({
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "customers"
+  },
+  protein:{
+    type: String
+  },
+  carbs{
+    type: String
+  },
+  fats:{
+    type: String
+  },
+  kcal:{
+    type: String
   }
 });
 
