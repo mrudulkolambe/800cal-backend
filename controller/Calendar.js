@@ -47,6 +47,30 @@ const getCalendarByCategory = async (req, res) => {
   }
 }
 
+const UpdateCalendar = async (req, res) => {
+  try {
+    const calendar = await Calendar.findByIdAndUpdate(req.params._id, req.body);
+    const updatedCalendar = await Calendar.findById(calendar._id).populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password");
+    if (updatedCalendar) {
+      return res.json({
+        error: false,
+        message: "Updated Successfully!",
+        calendar: updatedCalendar
+      })
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong",
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
 
 
-module.exports = { createCalendarDate, getCalendarByCategory };
+
+module.exports = { createCalendarDate, getCalendarByCategory, UpdateCalendar };
