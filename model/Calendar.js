@@ -42,7 +42,7 @@ const CalendarSchema = new mongoose.Schema({
   protein:{
     type: String
   },
-  carbs{
+  carbs: {
     type: String
   },
   fats:{
