@@ -77,11 +77,18 @@ const Customer = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+subscriptionStartDate: {
+		type: Number,
+		default: 0
+	},
 	subscriptionEndDate: {
 		type: Number,
 		default: 0
-	}
-}, { timestamps: true })
+	},
+subscriptionId: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: 'orders'
+	}}, { timestamps: true })
 
 
 module.exports = mongoose.model('customers', Customer);
