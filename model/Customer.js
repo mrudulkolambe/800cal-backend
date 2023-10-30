@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+, mongoose = require("mongoose");
 
 const Customer = new mongoose.Schema({
 	username: {
@@ -80,7 +80,7 @@ const Customer = new mongoose.Schema({
 subscriptionStartDate: {
 		type: Number,
 		default: 0
-	}
+	},
 	subscriptionEndDate: {
 		type: Number,
 		default: 0
