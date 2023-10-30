@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const Calendar = require("../model/Calendar");
 
 const createCalendarDate = async (req, res) => {
@@ -71,6 +72,30 @@ const UpdateCalendar = async (req, res) => {
   }
 }
 
+const handleRestaurantCalendar = async (req, res) => {
+  try {
+    const DateObj = new Date();
+    const calendars = await Calendar.find({ restaurant: req.restaurant._id, date: { $gte: moment([DateObj.getFullYear(), DateObj.getMonth(), DateObj.getDate(), 0, 0, 0]).format("x") } }).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").sort("date")
+    if (calendars) {
+      return res.json({
+        error: false,
+        message: "Fetched Successfully!",
+        calendar: calendars
+      })
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong!",
+        calendar: []
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
 
 
-module.exports = { createCalendarDate, getCalendarByCategory, UpdateCalendar };
+module.exports = { createCalendarDate, getCalendarByCategory, UpdateCalendar, handleRestaurantCalendar };
