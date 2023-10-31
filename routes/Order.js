@@ -11,6 +11,6 @@ router.get("/category/:category", getOrdersByCategory);
 
 router.get("/user/:_id", handleCustomer, getUserOrderById);
 
-router.patch("/user/:_id", handleCustomer, updateOrder);
+router.patch("/user/:_id", updateOrder);
 
 module.exports = router;
