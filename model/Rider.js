@@ -39,6 +39,12 @@ const Rider = new mongoose.Schema({
 	phonenumber: {
 		type: String,
 		required: true
+	},
+	civilID: {
+		type: String,
+	},
+	licenseNo: {
+		type: String
 	}
 }, { timestamps: true })
 
