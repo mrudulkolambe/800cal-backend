@@ -74,8 +74,20 @@ const OrderSchema = new mongoose.Schema({
   meals: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "meals"
+  },
+  riderID: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "riders"
+  },
+  lat: {
+    type: Number
+  },
+  lng: {
+    type: Number
+  },
+  delivery_status: {
+    type: String,
   }
-  // penalty
 });
 
 module.exports = mongoose.model("orders", OrderSchema)

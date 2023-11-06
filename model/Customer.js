@@ -87,6 +87,17 @@ const Customer = new mongoose.Schema({
 	},
 	subscriptionId: {
 		type: String,
+	},
+	token: {
+		type: String
+	},
+	subusers1: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "customers"
+	},
+	subusers2: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "customers"
 	}
 }, { timestamps: true })
 

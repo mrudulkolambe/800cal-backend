@@ -164,4 +164,32 @@ const getAllCustomers = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getAllCustomers };	
+const resetPassword = async (req, res) => {
+	try {
+		let user = undefined;
+		if (req.user.role === "customer") {
+			user = await Customer.findById(req.user._id);
+		} 
+		let token = req?.headers?.authorization?.split(" ")[1];
+		if (user.token && user.token === token) {
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(req.body.password, salt);
+			user.password = hashedPassword
+			user.token = ""
+			user.save()
+				.then(() => {
+					res.json({ error: false, message: "Password Updated Successfully!" })
+				})
+				.catch((err) => {
+					res.json({ error: true, message: err.message })
+				})
+		} else {
+			res.json({ error: true, message: "Something went wrong!" })
+		}
+
+	} catch (error) {
+		res.json({ error: true, message: error.message });
+	}
+}
+
+module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getAllCustomers, resetPassword };	

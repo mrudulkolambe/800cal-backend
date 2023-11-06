@@ -158,4 +158,29 @@ const getAllRiders = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getRiderProfileByToken, updateRiderByToken, getAllRiders };
+const getRiderInfo = async (req, res) => {
+	try {
+		const rider = await Rider.findById(req.params._id).populate("restaurant", { password: 0 })
+		if (rider) {
+			return res.json({
+				error: false,
+				message: "Profile Fetched Successfully",
+				rider: rider
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				rider: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+			rider: undefined
+		})
+	}
+}
+
+module.exports = { handleSignup, handleSignIn, getRiderProfileByToken, updateRiderByToken, getAllRiders, getRiderInfo };

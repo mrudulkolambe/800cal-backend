@@ -23,6 +23,10 @@ const CalendarSchema = new mongoose.Schema({
   date: {
     type: Number,
   },
+  timestamp: {
+    type: Number,
+    default: Date.now()
+  },
   food: {
     type: [mongoose.SchemaTypes.ObjectId],
     ref: "food"
@@ -50,6 +54,14 @@ const CalendarSchema = new mongoose.Schema({
   },
   kcal:{
     type: String
+  },
+  note: {
+    type: [String],
+    default: []
+  },
+  rider: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "riders"
   }
 });
 

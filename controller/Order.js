@@ -130,5 +130,46 @@ const updateOrder = async (req, res) => {
   }
 }
 
+const riderNewOrder = async (req, res) => {
+  try {
+    console.log({delivery_status: "assigned", riderID: req.rider._id})
+    const order = await Order.findOne({ riderID: req.rider._id, delivery_status: "assigned" });
+    return res.json({
+      error: false,
+      message: "Fetched Successfully!",
+      order: order
+    })
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
 
-module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder }
+const assignOrder = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params._id, { delivery_status: "assigned", riderID: req.body.riderID });
+    if (order) {
+      return res.json({
+        error: false,
+        message: "Order Assiged",
+        order: order
+      })
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong!",
+        order: undefined
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
+
+
+module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder }
