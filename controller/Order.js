@@ -171,5 +171,28 @@ const assignOrder = async (req, res) => {
   }
 }
 
-
+const riderOrders = async (req, res) => {
+try{
+const orders = await Order.find({riderID: req.rider._id})
+if(orders){
+return res.json({
+      error: false,
+      message: "Orders fetched successfully!",
+orders: orders
+    })
+}
+else{
+return res.json({
+      error: true,
+      message: "Something went wrong!",
+    })
+}
+}
+catch(error){
+return res.json({
+      error: true,
+      message: error.message,
+    })
+}
+}
 module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder }
