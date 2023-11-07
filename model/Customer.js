@@ -91,13 +91,8 @@ const Customer = new mongoose.Schema({
 	token: {
 		type: String
 	},
-	subusers1: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: "customers"
-	},
-	subusers2: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: "customers"
+	subusers: {
+		type: String,
 	}
 }, { timestamps: true })
 
