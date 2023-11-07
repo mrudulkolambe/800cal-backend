@@ -92,7 +92,7 @@ const Customer = new mongoose.Schema({
 		type: String
 	},
 	subusers: {
-		type: String,
+		type: [String],
 	}
 }, { timestamps: true })
 
