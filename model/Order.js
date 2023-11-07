@@ -85,9 +85,17 @@ const OrderSchema = new mongoose.Schema({
   lng: {
     type: Number
   },
-  delivery_status: {
-    type: String,
-  }
+  delivery_status: {    
+type: String,
+  },
+declined: {
+type: Boolean,
+default: false
+},
+accepted: {
+type: Boolean,
+default: false
+}
 });
 
 module.exports = mongoose.model("orders", OrderSchema)
