@@ -101,6 +101,12 @@ const OrderSchema = new mongoose.Schema({
   accepted: {
     type: Boolean,
     default: false
+  },
+  pickupAddress: {
+    type: String
+  },
+  dropAddress: {
+    type: String
   }
 });
 
