@@ -132,7 +132,6 @@ const updateOrder = async (req, res) => {
 
 const riderNewOrder = async (req, res) => {
   try {
-    console.log({delivery_status: "assigned", riderID: req.rider._id})
     const order = await Order.findOne({ riderID: req.rider._id, delivery_status: "assigned" });
     return res.json({
       error: false,
@@ -172,27 +171,27 @@ const assignOrder = async (req, res) => {
 }
 
 const riderOrders = async (req, res) => {
-try{
-const orders = await Order.find({riderID: req.rider._id})
-if(orders){
-return res.json({
-      error: false,
-      message: "Orders fetched successfully!",
-orders: orders
-    })
-}
-else{
-return res.json({
-      error: true,
-      message: "Something went wrong!",
-    })
-}
-}
-catch(error){
-return res.json({
+  try {
+    const orders = await Order.find({ riderID: req.rider._id }).populate("customer", "-password").populate("program").populate("meals").populate("riderID").populate("restaurantCategory")
+    if (orders) {
+      return res.json({
+        error: false,
+        message: "Orders fetched successfully!",
+        orders: orders
+      })
+    }
+    else {
+      return res.json({
+        error: true,
+        message: "Something went wrong!",
+      })
+    }
+  }
+  catch (error) {
+    return res.json({
       error: true,
       message: error.message,
     })
+  }
 }
-}
-module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder }
+module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder, riderOrders }

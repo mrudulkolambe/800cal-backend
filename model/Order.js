@@ -79,23 +79,29 @@ const OrderSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "riders"
   },
-  lat: {
+  picklat: {
     type: Number
   },
-  lng: {
+  picklng: {
     type: Number
   },
-  delivery_status: {    
-type: String,
+  droplat: {
+    type: Number
   },
-declined: {
-type: Boolean,
-default: false
-},
-accepted: {
-type: Boolean,
-default: false
-}
+  droplng: {
+    type: Number
+  },
+  delivery_status: {
+    type: String,
+  },
+  declined: {
+    type: Boolean,
+    default: false
+  },
+  accepted: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model("orders", OrderSchema)
