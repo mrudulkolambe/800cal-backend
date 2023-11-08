@@ -15,7 +15,7 @@ router.get('/all', getAllCustomers);
 router.patch('/update', customer, updateCustomerByToken);
 
 router.patch('/forget-password', resetPasswordEmail);
-router.patch('/reset-password', resetPassword);
+router.patch('/reset-password', customer, resetPassword);
 
 
 

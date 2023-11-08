@@ -20,7 +20,7 @@ const app = express();
 dotenv.config();
 app.use(express.json());
 app.use(cors({
-	origin: ["https://800cal-restaurant-dashboard.vercel.app", "https://800cal-admin-dashboard.vercel.app", "http://localhost:3000", "http://localhost:3001"]
+	origin: ["https://800cal-restaurant-dashboard.vercel.app", "https://800cal-admin-dashboard.vercel.app", "http://localhost:3000", "http://localhost:3001", "http://localhost:5500"]
 }))
 
 app.use("/admin", adminRouter);

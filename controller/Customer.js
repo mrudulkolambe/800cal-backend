@@ -167,8 +167,8 @@ const getAllCustomers = async (req, res) => {
 const resetPassword = async (req, res) => {
 	try {
 		let user = undefined;
-		if (req.user.role === "customer") {
-			user = await Customer.findById(req.user._id);
+		if (req.customer.role === "customer") {
+			user = await Customer.findById(req.customer._id);
 		} 
 		let token = req?.headers?.authorization?.split(" ")[1];
 		if (user.token && user.token === token) {
