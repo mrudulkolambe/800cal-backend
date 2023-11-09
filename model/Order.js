@@ -74,32 +74,6 @@ const OrderSchema = new mongoose.Schema({
   meals: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "meals"
-  },
-  picklat: {
-    type: Number
-  },
-  picklng: {
-    type: Number
-  },
-  droplat: {
-    type: Number
-  },
-  droplng: {
-    type: Number
-  },
-  declined: {
-    type: Boolean,
-    default: false
-  },
-  accepted: {
-    type: Boolean,
-    default: false
-  },
-  pickupAddress: {
-    type: String
-  },
-  dropAddress: {
-    type: String
   }
 });
 

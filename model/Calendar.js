@@ -20,6 +20,24 @@ const CalendarSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "restaurants",
   },
+  picklat: {
+    type: Number
+  },
+  picklng: {
+    type: Number
+  },
+  droplat: {
+    type: Number
+  },
+  droplng: {
+    type: Number
+  },
+  pickupAddress: {
+    type: String
+  },
+  dropAddress: {
+    type: String
+  },
   date: {
     type: Number,
   },
