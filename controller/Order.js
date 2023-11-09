@@ -113,7 +113,7 @@ const updateOrder = async (req, res) => {
       return res.json({
         error: false,
         message: "Fetched Successfully!",
-        subscription: { ...updateOrder.toObject() }
+        subscription: updateOrder
       })
     } else {
       return res.json({
