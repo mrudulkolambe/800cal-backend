@@ -8,7 +8,7 @@ router.post("/create", handleCustomer, createCalendarDate)
 
 router.get("/all", getCalendarByCategory)
 
-router.patch("/update/:_id", handleCustomer, UpdateCalendar);
+router.patch("/update/:_id", UpdateCalendar);
 
 router.get("/restaurant", handleRestaurant, handleRestaurantCalendar);
 
