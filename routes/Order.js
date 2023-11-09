@@ -18,6 +18,6 @@ router.get("/rider/active", handleRider, riderNewOrder);
 
 router.get("/rider", handleRider, riderOrders);
 
-router.patch("/assign/:_id", handleRider, assignOrder);
+router.patch("/assign/:_id", assignOrder);
 
 module.exports = router;

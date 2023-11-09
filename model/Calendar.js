@@ -43,16 +43,16 @@ const CalendarSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "customers"
   },
-  protein:{
+  protein: {
     type: String
   },
   carbs: {
     type: String
   },
-  fats:{
+  fats: {
     type: String
   },
-  kcal:{
+  kcal: {
     type: String
   },
   note: {
@@ -62,7 +62,10 @@ const CalendarSchema = new mongoose.Schema({
   rider: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "riders"
-  }
+  },
+  delivery_status: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("calendars", CalendarSchema)

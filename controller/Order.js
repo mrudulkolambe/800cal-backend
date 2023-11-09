@@ -132,7 +132,7 @@ const updateOrder = async (req, res) => {
 
 const riderNewOrder = async (req, res) => {
   try {
-    const order = await Order.findOne({ riderID: req.rider._id, delivery_status: "assigned" });
+    const order = await Calendar.findOne({ rider: req.rider._id, delivery_status: "assigned" }).populate("customer", "-password").populate("program").populate("meals").populate("food").populate("order").populate("restaurant", "-password").populate("rider", "-password");
     return res.json({
       error: false,
       message: "Fetched Successfully!",
@@ -148,12 +148,14 @@ const riderNewOrder = async (req, res) => {
 
 const assignOrder = async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(req.params._id, { delivery_status: "assigned", riderID: req.body.riderID });
-    if (order) {
+    // console.log({order: req.params._id, body: req.body})
+    const order = await Calendar.findByIdAndUpdate(req.params._id, { ...req.body }, { returnOriginal: false });
+    const order1 = await Calendar.findById(req.params._id).populate("customer", "-password").populate("program").populate("meals").populate("food").populate("order").populate("restaurant", "-password").populate("rider", "-password");
+    if (order1) {
       return res.json({
         error: false,
         message: "Order Assiged",
-        order: order
+        order: order1
       })
     } else {
       return res.json({
@@ -172,7 +174,7 @@ const assignOrder = async (req, res) => {
 
 const riderOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ riderID: req.rider._id }).populate("customer", "-password").populate("program").populate("meals").populate("riderID").populate("restaurantCategory")
+    const orders = await Calendar.find({ rider: req.rider._id }).populate("customer", "-password").populate("program").populate("meals").populate("food").populate("order").populate("restaurant", "-password").populate("rider", "-password")
     if (orders) {
       return res.json({
         error: false,

@@ -75,10 +75,6 @@ const OrderSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "meals"
   },
-  riderID: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "riders"
-  },
   picklat: {
     type: Number
   },
@@ -90,9 +86,6 @@ const OrderSchema = new mongoose.Schema({
   },
   droplng: {
     type: Number
-  },
-  delivery_status: {
-    type: String,
   },
   declined: {
     type: Boolean,
