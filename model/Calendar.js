@@ -66,6 +66,14 @@ const CalendarSchema = new mongoose.Schema({
   delivery_status: {
     type: String,
   },
+  declined: {
+    type: Boolean,
+    default: false
+  },
+  accepted: {
+    type: Boolean,
+    default: false
+  },
 });
 
 module.exports = mongoose.model("calendars", CalendarSchema)
