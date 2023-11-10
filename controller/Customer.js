@@ -15,28 +15,43 @@ const handleSignup = async (req, res) => {
 				message: "User already exists!"
 			})
 		} else {
-			const salt = await bcrypt.genSalt(10);
-			const hashedPassword = await bcrypt.hash(password, salt);
-			const newcustomer = new Customer({
-				...req.body,
-				password: hashedPassword
-			});
-			const savedCustomer = await newcustomer.save();
-			const token = await jwt.sign({
-				_id: savedCustomer._id,
-				role: savedCustomer.role
-			}, process.env.JWT_SECRET);
-			if (savedCustomer) {
-				return res.json({
-					error: false,
-					message: "Signup Successful!",
-					token: token
-				})
-			} else {
-				return res.json({
-					error: true,
-					message: "Something went wrong!",
-				})
+			if (req.body.referredby) {
+				const referreduser = await Customer.findOne({ referralcode: req.body.referredby });
+				if (referreduser) {
+					const data = await Customer.findOneAndUpdate({ _id: referreduser._id }, {
+						$inc: { referralpoints: 100 }
+					}, { returnOriginal: false })
+					const salt = await bcrypt.genSalt(10);
+					const hashedPassword = await bcrypt.hash(password, salt);
+					const newcustomer = new Customer({
+						...req.body,
+						password: hashedPassword
+					});
+					newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.slice(20)}`
+					const savedCustomer = await newcustomer.save();
+
+					const token = await jwt.sign({
+						_id: savedCustomer._id,
+						role: savedCustomer.role
+					}, process.env.JWT_SECRET);
+					if (savedCustomer) {
+						return res.json({
+							error: false,
+							message: "Signup Successful!",
+							token: token
+						})
+					} else {
+						return res.json({
+							error: true,
+							message: "Something went wrong!",
+						})
+					}
+				}else{
+					return res.json({
+						error: true,
+						message: "Invalid Referral Code"
+					})
+				}
 			}
 		}
 	} catch (error) {
@@ -169,7 +184,7 @@ const resetPassword = async (req, res) => {
 		let user = undefined;
 		if (req.customer.role === "customer") {
 			user = await Customer.findById(req.customer._id);
-		} 
+		}
 		let token = req?.headers?.authorization?.split(" ")[1];
 		if (user.token && user.token === token) {
 			const salt = await bcrypt.genSalt(10);

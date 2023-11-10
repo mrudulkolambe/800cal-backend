@@ -93,6 +93,16 @@ const Customer = new mongoose.Schema({
 	},
 	subusers: {
 		type: [String],
+	},
+	referralcode: {
+		type: String,
+	},
+	referredby: {
+		type: String,
+	},
+	referralpoints: {
+		type: Number,
+		default: 0
 	}
 }, { timestamps: true })
 
