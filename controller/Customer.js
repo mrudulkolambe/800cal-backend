@@ -27,7 +27,7 @@ const handleSignup = async (req, res) => {
 						...req.body,
 						password: hashedPassword
 					});
-					newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.slice(20)}`
+					newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.toString().slice(20)}`
 					const savedCustomer = await newcustomer.save();
 
 					const token = await jwt.sign({
@@ -46,10 +46,36 @@ const handleSignup = async (req, res) => {
 							message: "Something went wrong!",
 						})
 					}
-				}else{
+				} else {
 					return res.json({
 						error: true,
 						message: "Invalid Referral Code"
+					})
+				}
+			} else {
+				const salt = await bcrypt.genSalt(10);
+				const hashedPassword = await bcrypt.hash(password, salt);
+				const newcustomer = new Customer({
+					...req.body,
+					password: hashedPassword
+				});
+				newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.toString().slice(20)}`
+				const savedCustomer = await newcustomer.save();
+
+				const token = await jwt.sign({
+					_id: savedCustomer._id,
+					role: savedCustomer.role
+				}, process.env.JWT_SECRET);
+				if (savedCustomer) {
+					return res.json({
+						error: false,
+						message: "Signup Successful!",
+						token: token
+					})
+				} else {
+					return res.json({
+						error: true,
+						message: "Something went wrong!",
 					})
 				}
 			}
