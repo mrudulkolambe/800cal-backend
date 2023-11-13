@@ -2,7 +2,7 @@ const Ingredients = require("../model/Ingredients");
 
 const ViewAllIngredients = async (req, res) => {
 	try {
-		const ingredients = await Ingredients.find({});
+		const ingredients = await Ingredients.find({ restaurant: req.restaurant._id });
 		if (ingredients) {
 			return res.json({
 				error: false,
@@ -50,7 +50,7 @@ const ViewAllIngredients = async (req, res) => {
 
 const CreateIngredients = async (req, res) => {
 	try {
-		const newIngredient = await new Ingredients(req.body);
+		const newIngredient = await new Ingredients({ ...req.body, restaurant: req.restaurant._id });
 		const savedIngredient = await newIngredient.save();
 		if (savedIngredient) {
 			return res.json({

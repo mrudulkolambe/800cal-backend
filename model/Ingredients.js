@@ -28,6 +28,11 @@ const Ingredients = new mongoose.Schema({
 	calories: {
 		type: String,
 	},
+	restaurant: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "restaurants",
+		required: true
+	}
 }, {timestamps: true})
 
 

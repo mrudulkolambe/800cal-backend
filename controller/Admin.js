@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const Admin = require("../model/Admin");
+const Details = require("../model/Data");
 
 
 const handleSignup = async (req, res) => {
@@ -114,13 +115,13 @@ const updateAdminByToken = async (req, res) => {
 		const admin = await Admin.findByIdAndUpdate(_id, req.body, {
 			returnOriginal: false
 		})
-		if(admin){
+		if (admin) {
 			return res.json({
 				error: false,
 				message: "Profile Updated Successfully",
 				admin
 			})
-		}else{
+		} else {
 			return res.json({
 				error: true,
 				message: "Something went wrong!",
@@ -134,4 +135,81 @@ const updateAdminByToken = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getAdminProfileByToken, updateAdminByToken };
+const createDetails = async (req, res) => {
+	try {
+		const newDetails = await new Details(req.body);
+		const savedDetails = await newDetails.save();
+		if (savedDetails) {
+			return res.json({
+				error: false,
+				message: "Details Created Successfully",
+				details: newDetails
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				details: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+const updateDetails = async (req, res) => {
+	try {
+		const data = Details.find();
+		const oldData = data[0];
+		const updatedDetails = await Details.findByIdAndUpdate(oldData._id, req.body, {
+			returnOriginal: false
+		})
+		if (updatedDetails) {
+			return res.json({
+				error: false,
+				message: "Details Updated Successfully",
+				details: updatedDetails
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				details: updatedDetails
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+const getDetails = async (req, res) => {
+	try {
+		const details = await Details.findOne({});
+		if (details) {
+			return res.json({
+				error: false,
+				message: "Details Fetched Successfully",
+				details: details
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				details: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+module.exports = { handleSignup, handleSignIn, getAdminProfileByToken, updateAdminByToken, createDetails, updateDetails, getDetails };
