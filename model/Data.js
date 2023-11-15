@@ -20,7 +20,10 @@ const DetailsSchema = new mongoose.Schema({
 	},
 	termsandconditions: {
 		type: String
-	}
+	},
+	help: {
+		type: String
+	},
 }, {
 	timestamps: true
 })

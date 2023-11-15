@@ -54,22 +54,29 @@ const handleSignIn = async (req, res) => {
 				message: "User not found!"
 			})
 		} else {
-			const isAuthed = await bcrypt.compare(password, rider.password);
-			if (isAuthed) {
-				const token = await jwt.sign({
-					_id: rider._id,
-					role: rider.role
-				}, process.env.JWT_SECRET);
-				return res.json({
-					error: false,
-					message: "Signin Successful!",
-					token: token
-				})
-			} else {
+			if (rider.disabled) {
 				return res.json({
 					error: true,
-					message: "Invalid Credentials!",
+					message: "Contact admin!"
 				})
+			} else {
+				const isAuthed = await bcrypt.compare(password, rider.password);
+				if (isAuthed) {
+					const token = await jwt.sign({
+						_id: rider._id,
+						role: rider.role
+					}, process.env.JWT_SECRET);
+					return res.json({
+						error: false,
+						message: "Signin Successful!",
+						token: token
+					})
+				} else {
+					return res.json({
+						error: true,
+						message: "Invalid Credentials!",
+					})
+				}
 			}
 		}
 	} catch (error) {

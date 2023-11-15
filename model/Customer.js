@@ -103,6 +103,11 @@ const Customer = new mongoose.Schema({
 	referralpoints: {
 		type: Number,
 		default: 0
+	},
+	disabled: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 }, { timestamps: true })
 

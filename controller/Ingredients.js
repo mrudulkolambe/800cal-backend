@@ -55,7 +55,7 @@ const CreateIngredients = async (req, res) => {
 		if (savedIngredient) {
 			return res.json({
 				error: false,
-				message: "Meal created successfully!",
+				message: "Ingredient created successfully!",
 				ingredient: savedIngredient
 			})
 		} else {

@@ -45,6 +45,16 @@ const Rider = new mongoose.Schema({
 	},
 	licenseNo: {
 		type: String
+	},
+	delete: {
+		type: Boolean,
+		default: false,
+		required: true
+	},
+	disabled: {
+		type: Boolean,
+		default: false,
+		required: true
 	}
 }, { timestamps: true })
 
