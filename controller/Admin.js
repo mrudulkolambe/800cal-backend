@@ -162,9 +162,8 @@ const createDetails = async (req, res) => {
 
 const updateDetails = async (req, res) => {
 	try {
-		const data = Details.find();
-		const oldData = data[0];
-		const updatedDetails = await Details.findByIdAndUpdate(oldData._id, req.body, {
+		const details = await Details.findOne({});
+		const updatedDetails = await Details.findByIdAndUpdate(details._id, req.body, {
 			returnOriginal: false
 		})
 		if (updatedDetails) {
@@ -181,6 +180,7 @@ const updateDetails = async (req, res) => {
 			})
 		}
 	} catch (error) {
+		console.log(error)
 		return res.json({
 			error: true,
 			message: error.message,
