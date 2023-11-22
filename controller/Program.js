@@ -75,4 +75,28 @@ const UpdatePrograms = async (req, res) => {
 	}
 }
 
-module.exports = { createProgram, ViewAllPrograms, UpdatePrograms };
+const GetProgramById = async (req, res) => {
+	try {
+		const program = await Program.findById(req.params._id)
+		if (program) {
+			return res.json({
+				error: false,
+				message: "Program Fetched Successfully",
+				program: program
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				program: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+module.exports = { createProgram, ViewAllPrograms, UpdatePrograms, GetProgramById };

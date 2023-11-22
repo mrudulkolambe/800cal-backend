@@ -15,6 +15,7 @@ const transactionRouter = require('./routes/Transaction');
 const orderRouter = require('./routes/Order');
 const calendarRouter = require('./routes/Calendar');
 const discountRouter = require('./routes/Discount');
+const mealApplicationRouter = require('./routes/AppliedRestaurant');
 
 const app = express();
 dotenv.config();
@@ -36,6 +37,7 @@ app.use("/customer-transaction", transactionRouter);
 app.use("/order", orderRouter);
 app.use("/calendar", calendarRouter);
 app.use("/discount", discountRouter);
+app.use("/meal-application", mealApplicationRouter);
 
 app.get("/", (req, res) => {
 	res.send("Server Is Live!")

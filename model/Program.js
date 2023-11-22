@@ -29,6 +29,11 @@ const Program = new mongoose.Schema({
 	},
 	kcal: {
 		type: Number,
+	},
+	timestamp: {
+		type: Number,
+		default: Date.now(),
+		required: true
 	}
 }, { timestamps: true })
 

@@ -48,15 +48,66 @@ const ViewMealByProgramId = async (req, res) => {
 	}
 }
 
+const GetMealByID = async (req, res) => {
+	try {
+		const meal = await Meals.findById(req.params._id).populate("program");
+		if (meal) {
+			return res.json({
+				error: false,
+				message: "Fetched Successfully",
+				meal: meal
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				meal: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
 const createMeal = async (req, res) => {
 	try {
 		const newMeal = await new Meals(req.body);
 		const savedMeal = await newMeal.save();
 		if (savedMeal) {
+			const data = await Meals.findById(savedMeal._id).populate("program");
 			return res.json({
 				error: false,
 				message: "Meal created successfully!",
-				meal: savedMeal
+				meal: data
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+const updateMeal = async (req, res) => {
+	try {
+		const updatedMeal = await Meals.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		});
+		if (updatedMeal) {
+			const data = await Meals.findById(updatedMeal._id).populate("program")
+			return res.json({
+				error: false,
+				message: "Meal created successfully!",
+				meal: data
 			})
 		} else {
 			return res.json({
@@ -73,4 +124,4 @@ const createMeal = async (req, res) => {
 }
 
 
-module.exports = { createMeal, ViewMeal, ViewMealByProgramId };
+module.exports = { createMeal, ViewMeal, ViewMealByProgramId, updateMeal, GetMealByID };

@@ -97,7 +97,7 @@ const getRestaurantProfileByToken = async (req, res) => {
 	try {
 		const { _id } = req.restaurant;
 		if (_id) {
-			const restaurant = await Restaurant.findById(_id, { password: 0 }).populate("category");
+			const restaurant = await Restaurant.findById(_id, { password: 0 })
 			if (restaurant) {
 				return res.json({
 					error: false,
@@ -131,7 +131,7 @@ const updateRestaurantByToken = async (req, res) => {
 		delete body.enabled;
 		const restaurant = await Restaurant.findByIdAndUpdate(_id, body, {
 			returnOriginal: false
-		}).populate("category")
+		})
 		if (restaurant) {
 			return res.json({
 				error: false,
@@ -156,7 +156,7 @@ const getAllRestaurants = async (req, res) => {
 	try {
 		const restaurants = await Restaurant.find({}, {
 			password: 0,
-		}).populate("category");
+		})
 		if (restaurants) {
 			return res.json({
 				error: false,
@@ -182,7 +182,7 @@ const enableRestaurant = async (req, res) => {
 	try {
 		const restaurant = await Restaurant.findByIdAndUpdate(req.body._id, { enabled: true }, {
 			returnOriginal: false
-		}).populate("category")
+		})
 		if (restaurant) {
 			return res.json({
 				error: false,

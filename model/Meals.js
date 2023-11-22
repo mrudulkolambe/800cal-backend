@@ -9,9 +9,9 @@ const Meals = new mongoose.Schema({
 		type: String,
 		required: [true, "Please provide logo"]
 	},
-	tags: {
-		type: [String]
-	},
+	// tag: {
+	// 	type: String
+	// },
 	description: {
 		type: [String],
 	},
@@ -26,9 +26,19 @@ const Meals = new mongoose.Schema({
 	},
 	kcal: {
 		type: String,
+	},
+	price: {
+		type: Number
+	},
+	disabled: {
+		type: Boolean,
+		default: true,
+		required: true
+	},
+	meals: {
+		type: [Map],
+		required: true
 	}
 }, { timestamps: true })
 
 module.exports = mongoose.model('meals', Meals);
-
-// MACRO<obj> = { title: "Protein", value: 30, unit: "gm"  }
