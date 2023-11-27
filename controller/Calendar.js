@@ -4,8 +4,8 @@ const AppliedRestaurant = require("../model/AppliedRestaurant");
 
 const createCalendarDate = async (req, res) => {
   try {
-    const appliedResto = await AppliedRestaurant.findOne({restaurant: req.body.restaurant, meal: req.body.meal});
-    const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body, vendor_price: appliedResto.price });
+    const appliedResto = await AppliedRestaurant.findOne({restaurant: req.body.restaurant, meal: req.body.meals});
+    const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body, vendor_price: appliedResto._id });
     const savedcalendar = await newcalendardate.save();
     if (savedcalendar) {
       return res.json({
@@ -77,7 +77,7 @@ const UpdateCalendar = async (req, res) => {
 const handleRestaurantCalendar = async (req, res) => {
   try {
     const DateObj = new Date();
-    const calendars = await Calendar.find({ restaurant: req.restaurant._id}).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order")
+    const calendars = await Calendar.find({ restaurant: req.restaurant._id}).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("vendor_price")
     if (calendars) {
       return res.json({
         error: false,
