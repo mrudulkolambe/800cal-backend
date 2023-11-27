@@ -96,6 +96,10 @@ const CalendarSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  vendor_price: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "appliedrestaurants",
+  }
 });
 
 module.exports = mongoose.model("calendars", CalendarSchema)

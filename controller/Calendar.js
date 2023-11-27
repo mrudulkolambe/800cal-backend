@@ -1,9 +1,11 @@
 const moment = require("moment/moment");
 const Calendar = require("../model/Calendar");
+const AppliedRestaurant = require("../model/AppliedRestaurant");
 
 const createCalendarDate = async (req, res) => {
   try {
-    const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body });
+    const appliedResto = await AppliedRestaurant.findOne({restaurant: req.body.restaurant, meal: req.body.meal});
+    const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body, vendor_price: appliedResto.price });
     const savedcalendar = await newcalendardate.save();
     if (savedcalendar) {
       return res.json({
