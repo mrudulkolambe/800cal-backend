@@ -139,6 +139,30 @@ const updateRiderByToken = async (req, res) => {
 		})
 	}
 }
+const updateRiderByAdmin = async (req, res) => {
+	try {
+		const rider = await Rider.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		})
+		if (rider) {
+			return res.json({
+				error: false,
+				message: "Profile Updated Successfully",
+				rider
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
 
 const getAllRiders = async (req, res) => {
 	try {
@@ -190,4 +214,4 @@ const getRiderInfo = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getRiderProfileByToken, updateRiderByToken, getAllRiders, getRiderInfo };
+module.exports = { handleSignup, handleSignIn, getRiderProfileByToken, updateRiderByToken, getAllRiders, getRiderInfo, updateRiderByAdmin };

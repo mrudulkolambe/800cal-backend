@@ -66,7 +66,7 @@ const GetAppliedMeals = async (req, res) => {
 
 const GetAppliedRestaurantAndMeal = async (req, res) => {
 	try {
-		const application = await AppliedRestaurant.findOne({restaurant: req.restaurant._id, meal: req.params.meal}).populate("restaurant", "-password").populate({
+		const application = await AppliedRestaurant.findOne({ restaurant: req.restaurant._id, meal: req.params.meal }).populate("restaurant", "-password").populate({
 			path: 'meal',
 			populate: {
 				path: 'program',
@@ -93,4 +93,38 @@ const GetAppliedRestaurantAndMeal = async (req, res) => {
 	}
 }
 
-module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal };
+const AppliedMealApprove = async (req, res) => {
+	try {
+		const application = await AppliedRestaurant.findOneAndUpdate({ restaurant: req.body.restaurant, meal: req.body.meal }, {
+			approved: true
+		}, {
+			returnOriginal: false
+		})
+		if (application) {
+			const updatedApplication = await AppliedRestaurant.findById(application._id).populate("restaurant", "-password").populate({
+				path: 'meal',
+				populate: {
+					path: 'program',
+					model: 'programs'
+				}
+			});
+			return res.json({
+				error: false,
+				message: "Approved Successfully!",
+				info: updatedApplication
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message
+		})
+	}
+}
+
+module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal, AppliedMealApprove };
