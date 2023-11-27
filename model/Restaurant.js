@@ -48,11 +48,6 @@ const Restaurant = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
-	category: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: "resto-category",
-		required: true
-	},
 	rating: {
 		type: Number,
 		enum: [1, 2, 3, 4, 5],
@@ -91,6 +86,11 @@ const Restaurant = new mongoose.Schema({
 	ordersCanAccept: {
 		type: Number,
 		default: 0
+	},
+	wallet: {
+		type: Number,
+		default: 0,
+		required: true
 	}
 }, { timestamps: true })
 

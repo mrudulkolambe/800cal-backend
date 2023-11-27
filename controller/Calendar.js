@@ -75,7 +75,7 @@ const UpdateCalendar = async (req, res) => {
 const handleRestaurantCalendar = async (req, res) => {
   try {
     const DateObj = new Date();
-    const calendars = await Calendar.find({ restaurant: req.restaurant._id, date: { $gte: moment([DateObj.getFullYear(), DateObj.getMonth(), DateObj.getDate(), 0, 0, 0]).format("x") } }).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").sort("date")
+    const calendars = await Calendar.find({ restaurant: req.restaurant._id}).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order")
     if (calendars) {
       return res.json({
         error: false,

@@ -41,11 +41,6 @@ const OrderSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  restaurantCategory: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "resto-category",
-    required: true
-  },
   email: {
     type: String
   },
