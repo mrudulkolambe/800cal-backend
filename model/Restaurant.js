@@ -91,6 +91,11 @@ const Restaurant = new mongoose.Schema({
 	ordersCanAccept: {
 		type: Number,
 		default: 0
+	},
+	wallet: {
+		type: Number,
+		required: true,
+		default: 0
 	}
 }, { timestamps: true })
 
