@@ -93,6 +93,35 @@ const GetAppliedRestaurantAndMeal = async (req, res) => {
 	}
 }
 
+const GetAppliedRestaurantByMeal = async (req, res) => {
+	try {
+		const application = await AppliedRestaurant.find({ meal: req.params.meal }).populate("restaurant", "-password").populate({
+			path: 'meal',
+			populate: {
+				path: 'program',
+				model: 'programs'
+			}
+		});
+		if (application) {
+			return res.json({
+				error: false,
+				message: "Fetched Successfully!",
+				info: application
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message
+		})
+	}
+}
+
 const AppliedMealApprove = async (req, res) => {
 	try {
 		const application = await AppliedRestaurant.findOneAndUpdate({ restaurant: req.body.restaurant, meal: req.body.meal }, {
@@ -127,4 +156,4 @@ const AppliedMealApprove = async (req, res) => {
 	}
 }
 
-module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal, AppliedMealApprove };
+module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal, AppliedMealApprove, GetAppliedRestaurantByMeal };
