@@ -13,7 +13,7 @@ const Meals = new mongoose.Schema({
 	// 	type: String
 	// },
 	description: {
-		type: [String],
+		type: String,
 	},
 	rating: {
 		type: Number,
