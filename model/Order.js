@@ -41,9 +41,19 @@ const OrderSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  restaurantCategory: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "resto-category",
+  category: {
+    type: String,
+    required: true,
+    enum: ["gold", "silver", "platinum"],
+  },
+  choosenprice: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  listofrestaurants: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    ref: "restaurants",
     required: true
   },
   email: {
@@ -74,7 +84,7 @@ const OrderSchema = new mongoose.Schema({
   meals: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "meals"
-  }
+  },
 });
 
 module.exports = mongoose.model("orders", OrderSchema)

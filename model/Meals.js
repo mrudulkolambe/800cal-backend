@@ -27,9 +27,6 @@ const Meals = new mongoose.Schema({
 	kcal: {
 		type: String,
 	},
-	price: {
-		type: Number
-	},
 	disabled: {
 		type: Boolean,
 		default: true,
@@ -38,7 +35,27 @@ const Meals = new mongoose.Schema({
 	meals: {
 		type: [Map],
 		required: true
-	}
+	},
+	silverprice: {
+		type: Number,
+		default: 0,
+		required: true
+	},
+	goldprice: {
+		type: Number,
+		default: 0,
+		required: true
+	},
+	platinumprice: {
+		type: Number,
+		default: 0,
+		required: true
+	},
+	published: {
+		type: Boolean,
+		default: false,
+		required: true
+	},
 }, { timestamps: true })
 
 module.exports = mongoose.model('meals', Meals);

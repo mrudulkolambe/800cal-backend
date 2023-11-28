@@ -2,7 +2,7 @@ const Meals = require("../model/Meals")
 
 const ViewMeal = async (req, res) => {
 	try {
-		const meals = await Meals.find({}).populate("program");
+		const meals = await Meals.find({ }).populate("program");
 		if (meals) {
 			return res.json({
 				error: false,
@@ -26,7 +26,7 @@ const ViewMeal = async (req, res) => {
 
 const ViewMealByProgramId = async (req, res) => {
 	try {
-		const meals = await Meals.find({ program: req.params._id });
+		const meals = await Meals.find({ program: req.params._id, published: true });
 		if (meals) {
 			return res.json({
 				error: false,
