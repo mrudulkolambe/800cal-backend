@@ -207,7 +207,7 @@ const suspendRestaurant = async (req, res) => {
 	try {
 		const restaurant = await Restaurant.findByIdAndUpdate(req.body._id, { enabled: false }, {
 			returnOriginal: false
-		}).populate("category")
+		})
 		if (restaurant) {
 			return res.json({
 				error: false,
@@ -232,7 +232,7 @@ const getRestaurantDetails = async (req, res) => {
 	try {
 		const restaurantDetails = await Restaurant.findById(req.params._id, {
 			password: 0, enabled: 0, role: 0
-		}).populate("category")
+		})
 		if (restaurantDetails) {
 			const food = await Food.find({ restaurant: restaurantDetails._id }).populate("ingredients").populate("restaurant", { password: 0 });
 			const data = { ...restaurantDetails._doc, menu: food, comments: [] }
@@ -259,11 +259,11 @@ const getRestaurantDetails = async (req, res) => {
 const getRestaurantsByGroup = async (req, res) => {
 	try {
 		const goldcategory = await RestoCategory.findOne({ title: "Gold" });
-		const goldrestaurants = await Restaurant.find({ category: goldcategory._id }).populate("category");
+		const goldrestaurants = await Restaurant.find({ category: goldcategory._id });
 		const silvercategory = await RestoCategory.findOne({ title: "Silver" });
-		const silverrestaurants = await Restaurant.find({ category: silvercategory._id }).populate("category");
+		const silverrestaurants = await Restaurant.find({ category: silvercategory._id });
 		const platinumcategory = await RestoCategory.findOne({ title: "Platinum" });
-		const platinumrestaurants = await Restaurant.find({ category: platinumcategory._id }).populate("category");
+		const platinumrestaurants = await Restaurant.find({ category: platinumcategory._id });
 		if (goldcategory && goldrestaurants && silvercategory && silverrestaurants && platinumcategory && platinumrestaurants) {
 			return res.json({
 				error: false,
