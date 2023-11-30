@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
 
 const getUserOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ customer: req.customer._id }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password").sort({ timestamp: 'desc' })
+    const orders = await Order.find({ customer: req.customer._id }).populate("meals").populate("program").populate("customer", "-password").sort({ timestamp: 'desc' })
     if (orders) {
       return res.json({
         error: false,
@@ -53,9 +53,9 @@ const getOrdersByCategory = async (req, res) => {
   try {
     let orders = []
     if (req.params.category === "all") {
-      orders = await Order.find().populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+      orders = await Order.find().populate("meals").populate("program").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
     } else {
-      orders = await Order.find({ order_status: req.params.category }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
+      orders = await Order.find({ order_status: req.params.category }).populate("meals").populate("program").populate("customer", "-password, -balance").sort({ timestamp: 'desc' })
     }
     if (orders) {
       return res.json({
@@ -80,7 +80,7 @@ const getOrdersByCategory = async (req, res) => {
 
 const getUserOrderById = async (req, res) => {
   try {
-    const order = await Order.findOne({ _id: req.params._id }).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password");
+    const order = await Order.findOne({ _id: req.params._id }).populate("meals").populate("program").populate("customer", "-password");
     const calendars = await Calendar.find({ order: order._id }).populate("meals").populate("program").populate("restaurant", "-password").populate("customer", "-password");
     if (order && calendars) {
       return res.json({
@@ -108,7 +108,7 @@ const updateOrder = async (req, res) => {
     const order = await Order.findByIdAndUpdate(req.params._id, req.body, {
       returnOriginal: false
     });
-    const updateOrder = await Order.findById(order._id).populate("meals").populate("program").populate("restaurantCategory").populate("customer", "-password")
+    const updateOrder = await Order.findById(order._id).populate("meals").populate("program").populate("customer", "-password")
     if (updateOrder) {
       return res.json({
         error: false,
