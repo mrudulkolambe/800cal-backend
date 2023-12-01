@@ -24,29 +24,55 @@ const ViewAllIngredients = async (req, res) => {
 	}
 }
 
-// const ViewMealByProgramId = async (req, res) => {
-// 	try {
-// 		const meals = await Meals.find({ program: req.params._id });
-// 		if (meals) {
-// 			return res.json({
-// 				error: false,
-// 				message: "Fetched Successfully",
-// 				meal: meals
-// 			})
-// 		} else {
-// 			return res.json({
-// 				error: true,
-// 				message: "Something went wrong!",
-// 				meal: undefined
-// 			})
-// 		}
-// 	} catch (error) {
-// 		return res.json({
-// 			error: true,
-// 			message: error.message,
-// 		})
-// 	}
-// }
+const ViewIngredientById = async (req, res) => {
+	try {
+		const ingredient = await Ingredients.findById(req.params._id);
+		if (ingredient) {
+			return res.json({
+				error: false,
+				message: "Fetched Successfully",
+				ingredient: ingredient
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				ingredient: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
+
+const UpdateIngredient = async (req, res) => {
+	try {
+		const ingredient = await Ingredients.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		});
+		if (ingredient) {
+			return res.json({
+				error: false,
+				message: "Updated Successfully",
+				ingredient: ingredient
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+				ingredient: undefined
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
 
 const CreateIngredients = async (req, res) => {
 	try {
@@ -73,4 +99,4 @@ const CreateIngredients = async (req, res) => {
 }
 
 
-module.exports = { CreateIngredients, ViewAllIngredients };
+module.exports = { CreateIngredients, ViewAllIngredients, ViewIngredientById, UpdateIngredient };
