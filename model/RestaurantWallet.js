@@ -29,6 +29,9 @@ const RestaurantTransactionSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 		default: false
+	},
+	dispursed_date: {
+		type: Number,
 	}
 })
 

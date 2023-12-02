@@ -29,7 +29,6 @@ const handleSignup = async (req, res) => {
 					});
 					newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.toString().slice(20)}`
 					const savedCustomer = await newcustomer.save();
-
 					const token = await jwt.sign({
 						_id: savedCustomer._id,
 						role: savedCustomer.role
@@ -61,7 +60,6 @@ const handleSignup = async (req, res) => {
 				});
 				newcustomer.referralcode = `${newcustomer.username.slice(0, 4)}${newcustomer._id.toString().slice(20)}`
 				const savedCustomer = await newcustomer.save();
-
 				const token = await jwt.sign({
 					_id: savedCustomer._id,
 					role: savedCustomer.role
@@ -106,6 +104,7 @@ const handleSignIn = async (req, res) => {
 					message: "Contact admin!",
 				})
 			} else {
+				console.log(password, customer.password)
 				const isAuthed = await bcrypt.compare(password, customer.password);
 				if (isAuthed) {
 					const token = await jwt.sign({

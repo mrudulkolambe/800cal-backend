@@ -4,20 +4,22 @@ const AppliedRestaurant = require("../model/AppliedRestaurant");
 
 const createCalendarDate = async (req, res) => {
   try {
-    const appliedResto = await AppliedRestaurant.findOne({restaurant: req.body.restaurant, meal: req.body.meals});
-    const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body, vendor_price: appliedResto._id });
-    const savedcalendar = await newcalendardate.save();
-    if (savedcalendar) {
-      return res.json({
-        error: false,
-        message: "Created Successfully",
-        calendar: savedcalendar
-      })
-    } else {
-      return res.json({
-        error: true,
-        message: "Something went wrong",
-      })
+    if (req.customer._id) {
+      const appliedResto = await AppliedRestaurant.findOne({ restaurant: req.body.restaurant, meal: req.body.meals });
+      const newcalendardate = new Calendar({ customer: req.customer._id, ...req.body, vendor_price: appliedResto._id });
+      const savedcalendar = await newcalendardate.save();
+      if (savedcalendar) {
+        return res.json({
+          error: false,
+          message: "Created Successfully",
+          calendar: savedcalendar
+        })
+      } else {
+        return res.json({
+          error: true,
+          message: "Something went wrong",
+        })
+      }
     }
   } catch (error) {
     return res.json({
@@ -29,7 +31,9 @@ const createCalendarDate = async (req, res) => {
 
 const getCalendarByCategory = async (req, res) => {
   try {
-    const calendar = await Calendar.find().populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password");
+    const calendar = await Calendar.find().populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password").sort({
+      date: "descending"
+    });
     if (calendar) {
       return res.json({
         error: false,
@@ -76,8 +80,13 @@ const UpdateCalendar = async (req, res) => {
 
 const handleRestaurantCalendar = async (req, res) => {
   try {
-    const DateObj = new Date();
-    const calendars = await Calendar.find({ restaurant: req.restaurant._id}).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("vendor_price")
+    const calendars = await Calendar.find({
+      restaurant: req.restaurant._id, date: {
+        $lte: Number(req.params.timestamp) + (86400000 * 3)
+      }
+    }).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("vendor_price").sort({
+      date: "descending"
+    })
     if (calendars) {
       return res.json({
         error: false,
@@ -105,10 +114,10 @@ const getCalendarByID = async (req, res) => {
     const calendar = await Calendar.findById(req.params._id).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("rider", "-password")
     if (calendar) {
       return res.json({
-      error: false,
-      message: "Fetched Successfully!",
-      calendar: calendar
-    })
+        error: false,
+        message: "Fetched Successfully!",
+        calendar: calendar
+      })
     } else {
       return res.json({
         error: true,

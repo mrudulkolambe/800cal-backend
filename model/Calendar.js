@@ -55,15 +55,18 @@ const CalendarSchema = new mongoose.Schema({
   },
   meals: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "meals"
+    ref: "meals",
+    required: true
   },
   program: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "programs"
+    ref: "programs",
+    required: true
   },
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "customers"
+    ref: "customers",
+    required: true
   },
   protein: {
     type: String

@@ -10,7 +10,7 @@ router.get("/all", getCalendarByCategory)
 
 router.patch("/update/:_id", UpdateCalendar);
 
-router.get("/restaurant", handleRestaurant, handleRestaurantCalendar);
+router.get("/restaurant/:timestamp", handleRestaurant, handleRestaurantCalendar);
 
 router.get("/order/:_id", getCalendarByID);
 
