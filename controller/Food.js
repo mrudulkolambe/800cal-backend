@@ -152,30 +152,29 @@ const GetAllFood = async (req, res) => {
 // 	}
 // }
 
-// const updateAdminByToken = async (req, res) => {
-// 	try {
-// 		const { _id } = req.admin;
-// 		const admin = await Admin.findByIdAndUpdate(_id, req.body, {
-// 			returnOriginal: false
-// 		})
-// 		if (admin) {
-// 			return res.json({
-// 				error: false,
-// 				message: "Profile Updated Successfully",
-// 				admin
-// 			})
-// 		} else {
-// 			return res.json({
-// 				error: true,
-// 				message: "Something went wrong!",
-// 			})
-// 		}
-// 	} catch (error) {
-// 		return res.json({
-// 			error: true,
-// 			message: error.message,
-// 		})
-// 	}
-// }
+const UpdateById = async (req, res) => {
+	try {
+		const food = await Food.findByIdAndUpdate(req.params, req.body, {
+			returnOriginal: false
+		})
+		if (food) {
+			return res.json({
+				error: false,
+				message: "Updated Successfully",
+				food
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
 
-module.exports = { CreateFood, GetFoodByID, GetFoodByRestaurant, GetAllFood, GetFoodByRestaurantID };
+module.exports = { CreateFood, GetFoodByID, GetFoodByRestaurant, GetAllFood, GetFoodByRestaurantID, UpdateById };

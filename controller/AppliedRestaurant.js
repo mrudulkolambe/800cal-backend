@@ -66,6 +66,7 @@ const GetAppliedMeals = async (req, res) => {
 
 const GetAppliedRestaurantAndMeal = async (req, res) => {
 	try {
+		console.log(req.restaurant._id, req.params.meal)
 		const application = await AppliedRestaurant.findOne({ restaurant: req.restaurant._id, meal: req.params.meal }).populate("restaurant", "-password").populate({
 			path: 'meal',
 			populate: {

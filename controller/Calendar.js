@@ -31,7 +31,7 @@ const createCalendarDate = async (req, res) => {
 
 const getCalendarByCategory = async (req, res) => {
   try {
-    const calendar = await Calendar.find().populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password").sort({
+    const calendar = await Calendar.find().populate("customer", "-password").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password").sort({
       date: "descending"
     });
     if (calendar) {
@@ -57,7 +57,7 @@ const getCalendarByCategory = async (req, res) => {
 const UpdateCalendar = async (req, res) => {
   try {
     const calendar = await Calendar.findByIdAndUpdate(req.params._id, req.body);
-    const updatedCalendar = await Calendar.findById(calendar._id).populate("customer", "-password, -balance").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password");
+    const updatedCalendar = await Calendar.findById(calendar._id).populate("customer", "-password").populate("food").populate("meals").populate("program").populate("order").populate("restaurant", "-password");
     if (updatedCalendar) {
       return res.json({
         error: false,
