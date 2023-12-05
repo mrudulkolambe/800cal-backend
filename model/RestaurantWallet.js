@@ -6,6 +6,10 @@ const RestaurantTransactionSchema = new mongoose.Schema({
 		ref: "restaurants",
 		required: true
 	},
+	debit: {
+		type: Boolean,
+		required: true
+	},
 	amount: {
 		type: Number,
 		default: 0,
