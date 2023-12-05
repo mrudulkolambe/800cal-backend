@@ -66,8 +66,35 @@ const GetAppliedMeals = async (req, res) => {
 
 const GetAppliedRestaurantAndMeal = async (req, res) => {
 	try {
-		console.log(req.restaurant._id, req.params.meal)
 		const application = await AppliedRestaurant.findOne({ restaurant: req.restaurant._id, meal: req.params.meal }).populate("restaurant", "-password").populate({
+			path: 'meal',
+			populate: {
+				path: 'program',
+				model: 'programs'
+			}
+		});
+		if (application) {
+			return res.json({
+				error: false,
+				message: "Fetched Successfully!",
+				info: application
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message
+		})
+	}
+}
+const GetAppliedRestaurantAndMealParams = async (req, res) => {
+	try {
+		const application = await AppliedRestaurant.findOne({ restaurant: req.params.restaurant, meal: req.params.meal }).populate("restaurant", "-password").populate({
 			path: 'meal',
 			populate: {
 				path: 'program',
@@ -157,4 +184,4 @@ const AppliedMealApprove = async (req, res) => {
 	}
 }
 
-module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal, AppliedMealApprove, GetAppliedRestaurantByMeal };
+module.exports = { ApplyForMeal, GetAppliedMeals, GetAppliedRestaurantAndMeal, AppliedMealApprove, GetAppliedRestaurantByMeal, GetAppliedRestaurantAndMealParams };

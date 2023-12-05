@@ -56,7 +56,7 @@ const getRestaurantTransactions = async (req, res) => {
 
 const getTransactions = async (req, res) => {
 	try {
-		const transactions = await RestaurantWallet.find({}).populate("restaurant").sort({ 'time_stamp': -1 })
+		const transactions = await RestaurantWallet.find({debit: true}).populate("restaurant").sort({ 'time_stamp': -1 })
 		if (transactions) {
 			return res.json({
 				error: true,
@@ -82,7 +82,6 @@ const approveTransaction = async (req, res) => {
 		const transactions = await RestaurantWallet.findByIdAndUpdate(req.params._id, { approved: true, completed: true, dispursed_date: Date.now() }, {
 			returnOriginal: false
 		})
-		console.log(transactions)
 		const user = await Restaurant.findByIdAndUpdate(transactions?.restaurant, { $inc: { wallet: -transactions.amount } }, {
 			returnOriginal: false
 		})
