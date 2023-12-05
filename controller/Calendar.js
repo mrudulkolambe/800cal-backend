@@ -78,6 +78,33 @@ const UpdateCalendar = async (req, res) => {
   }
 }
 
+const handleRestaurantToken = async (req, res) => {
+  try {
+    const calendars = await Calendar.find({
+      restaurant: req.restaurant._id
+    }).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("vendor_price").sort({
+      date: "descending"
+    })
+    if (calendars) {
+      return res.json({
+        error: false,
+        message: "Fetched Successfully!",
+        calendar: calendars
+      })
+    } else {
+      return res.json({
+        error: true,
+        message: "Something went wrong!",
+        calendar: []
+      })
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
 const handleRestaurantCalendar = async (req, res) => {
   try {
     const calendars = await Calendar.find({
@@ -133,4 +160,4 @@ const getCalendarByID = async (req, res) => {
   }
 }
 
-module.exports = { createCalendarDate, getCalendarByCategory, UpdateCalendar, handleRestaurantCalendar, getCalendarByID };
+module.exports = { createCalendarDate, getCalendarByCategory, UpdateCalendar, handleRestaurantCalendar, getCalendarByID, handleRestaurantToken };
