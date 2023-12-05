@@ -4,7 +4,7 @@ const router = express.Router();
 const rider = require("../middleware/Rider")
 const restaurant = require("../middleware/Restaurant");
 
-router.post("/signup", restaurant, handleSignup);
+router.post("/signup", handleSignup);
 
 router.post('/signin', handleSignIn);
 

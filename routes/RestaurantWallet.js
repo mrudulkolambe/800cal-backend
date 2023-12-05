@@ -3,7 +3,7 @@ const handleRestaurant = require('../middleware/Restaurant');
 const { createTransaction, getRestaurantTransactions, approveTransaction } = require('../controller/RestaurantTransaction');
 const router = express.Router();
 
-router.post("/create", handleRestaurant, createTransaction);
+router.post("/create", createTransaction);
 
 router.get("/restaurant", handleRestaurant, getRestaurantTransactions);
 

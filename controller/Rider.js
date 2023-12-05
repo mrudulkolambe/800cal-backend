@@ -19,7 +19,7 @@ const handleSignup = async (req, res) => {
 			const newRider = new Rider({
 				...req.body,
 				password: hashedPassword,
-				restaurant: req.restaurant._id,
+				restaurant: req.body.restaurant,
 			});
 			const savedRider = await newRider.save();
 			if (savedRider) {

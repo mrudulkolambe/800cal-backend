@@ -4,7 +4,7 @@ const Restaurant = require("../model/Restaurant");
 
 const createTransaction = async (req, res) => {
 	try {
-		const newTransaction = await new RestaurantWallet({ ...req.body, restaurant: req.restaurant._id });
+		const newTransaction = await new RestaurantWallet({ ...req.body });
 		const savedTransaction = await newTransaction.save();
 		if (savedTransaction) {
 			return res.json({
@@ -51,10 +51,10 @@ const getRestaurantTransactions = async (req, res) => {
 
 const approveTransaction = async (req, res) => {
 	try {
-		const transactions = await RestaurantWallet.findByIdAndUpdate(req.params._id, { approved: true }, {
+		const transactions = await RestaurantWallet.findByIdAndUpdate(req.params._id, { approved: true, completed: true, dispursed_date: Date.now() }, {
 			returnOriginal: false
 		})
-		const user = await Restaurant.findByIdAndUpdate(req.restaurant._id, { $inc: { wallet: transactions.amount } }, {
+		const user = await Restaurant.findByIdAndUpdate(req.restaurant._id, { $inc: { wallet: -transactions.amount } }, {
 			returnOriginal: false
 		})
 		const transaction = await RestaurantWallet.findById(transactions._id).populate("restaurant")
