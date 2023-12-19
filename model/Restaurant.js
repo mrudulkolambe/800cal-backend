@@ -109,6 +109,10 @@ const Restaurant = new mongoose.Schema({
 	agreement: {
 		type: String,
 		required: true
+	},
+	companyname: {
+		type: String,
+		default: ""
 	}
 }, { timestamps: true })
 
