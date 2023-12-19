@@ -97,6 +97,18 @@ const Restaurant = new mongoose.Schema({
 		type: Number,
 		required: true,
 		default: 0
+	},
+	licenseExpiry: {
+		type: Number,
+		default: 0
+	},
+	license: {
+		type: String,
+		default: ""
+	},
+	agreement: {
+		type: String,
+		required: true
 	}
 }, { timestamps: true })
 
