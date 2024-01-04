@@ -231,7 +231,7 @@ const suspendRestaurant = async (req, res) => {
 const getRestaurantDetails = async (req, res) => {
 	try {
 		const restaurantDetails = await Restaurant.findById(req.params._id, {
-			password: 0, enabled: 0, role: 0
+			password: 0, role: 0
 		})
 		if (restaurantDetails) {
 			const food = await Food.find({ restaurant: restaurantDetails._id }).populate("ingredients").populate("restaurant", { password: 0 });

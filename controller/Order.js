@@ -103,6 +103,22 @@ const getUserOrderById = async (req, res) => {
   }
 }
 
+const getUserSubscriptionsById = async (req, res) => {
+  try {
+    const order = await Order.find({ customer: req.params._id }).populate("meals").populate("program").populate("customer", "-password");
+    return res.json({
+      error: false,
+      message: "Fetched Successfully!",
+      subscription: order
+    })
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    })
+  }
+}
+
 const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params._id, req.body, {
@@ -148,7 +164,6 @@ const riderNewOrder = async (req, res) => {
 
 const assignOrder = async (req, res) => {
   try {
-    // console.log({order: req.params._id, body: req.body})
     const order = await Calendar.findByIdAndUpdate(req.params._id, { ...req.body }, { returnOriginal: false });
     const order1 = await Calendar.findById(req.params._id).populate("customer", "-password").populate("program").populate("meals").populate("food").populate("order").populate("restaurant", "-password").populate("rider", "-password");
     if (order1) {
@@ -196,4 +211,4 @@ const riderOrders = async (req, res) => {
     })
   }
 }
-module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder, riderOrders }
+module.exports = { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder, riderOrders, getUserSubscriptionsById }

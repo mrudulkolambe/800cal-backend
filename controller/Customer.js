@@ -104,7 +104,6 @@ const handleSignIn = async (req, res) => {
 					message: "Contact admin!",
 				})
 			} else {
-				console.log(password, customer.password)
 				const isAuthed = await bcrypt.compare(password, customer.password);
 				if (isAuthed) {
 					const token = await jwt.sign({
@@ -159,6 +158,33 @@ const getCustomerProfileByToken = async (req, res) => {
 	}
 }
 
+const getCustomerById = async (req, res) => {
+	try {
+		const { _id } = req.params;
+		if (_id) {
+			const customer = await Customer.findById(_id, { password: 0 });
+			if (customer) {
+				return res.json({
+					error: false,
+					message: "Fetched Successfully!",
+					customer
+				})
+			} else {
+				return res.json({
+					error: true,
+					message: "Something went wrong!",
+					customer
+				})
+			}
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message
+		})
+	}
+}
+
 const updateCustomerByToken = async (req, res) => {
 	try {
 		const { _id } = req.customer;
@@ -185,22 +211,29 @@ const updateCustomerByToken = async (req, res) => {
 	}
 }
 
-const getAllCustomers = async (req, res) => {
+const getCustomers = async (req, res) => {
 	try {
-		const customers = await Customer.find({}, {
-			password: 0
-		})
+		let customers;
+		if (req.params.query === "all") {
+			customers = await Customer.find({}, {
+				password: 0
+			})
+		} else {
+			customers = await Customer.findOne({ _id: req.params.query }, {
+				password: 0
+			})
+		}
 		if (customers) {
 			return res.json({
 				error: false,
 				message: "Fetched Successfully!",
-				customers
+				customer: customers
 			})
 		} else {
 			return res.json({
 				error: true,
 				message: "Something went wrong!",
-				customers: undefined
+				customer: undefined
 			})
 		}
 	} catch (error) {
@@ -239,4 +272,4 @@ const resetPassword = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getAllCustomers, resetPassword };	
+module.exports = { handleSignup, handleSignIn, getCustomerProfileByToken, updateCustomerByToken, getCustomers, resetPassword, getCustomerById };	

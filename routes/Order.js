@@ -1,5 +1,5 @@
 const express = require("express");
-const { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder, riderOrders } = require("../controller/Order");
+const { createOrder, getUserOrders, getUserOrderById, getOrdersByCategory, updateOrder, riderNewOrder, assignOrder, riderOrders, getUserSubscriptionsById } = require("../controller/Order");
 const handleCustomer = require("../middleware/Customer");
 const handleRider = require("../middleware/Rider");
 const router = express.Router();
@@ -11,6 +11,8 @@ router.get("/user", handleCustomer, getUserOrders);
 router.get("/category/:category", getOrdersByCategory);
 
 router.get("/user/:_id", getUserOrderById);
+
+router.get("/user/subscription/:_id", getUserSubscriptionsById);
 
 router.patch("/user/:_id", updateOrder);
 
