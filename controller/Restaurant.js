@@ -151,6 +151,31 @@ const updateRestaurantByToken = async (req, res) => {
 		})
 	}
 }
+const updateRestaurant = async (req, res) => {
+	try {
+		const { _id } = req.params;
+		const restaurant = await Restaurant.findByIdAndUpdate(_id, req.body, {
+			returnOriginal: false
+		})
+		if (restaurant) {
+			return res.json({
+				error: false,
+				message: "Profile Updated Successfully",
+				restaurant
+			})
+		} else {
+			return res.json({
+				error: true,
+				message: "Something went wrong!",
+			})
+		}
+	} catch (error) {
+		return res.json({
+			error: true,
+			message: error.message,
+		})
+	}
+}
 
 const getAllRestaurants = async (req, res) => {
 	try {
@@ -302,4 +327,4 @@ const getRestaurantsByGroup = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup };
+module.exports = { handleSignup, handleSignIn, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup, updateRestaurant };

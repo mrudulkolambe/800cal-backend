@@ -138,7 +138,7 @@ const handleRestaurantCalendar = async (req, res) => {
 
 const getCalendarByID = async (req, res) => {
   try {
-    const calendar = await Calendar.findById(req.params._id).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("rider", "-password")
+    const calendar = await Calendar.findById(req.params._id).populate("program").populate("customer", "-password").populate("meals").populate("restaurant").populate("food").populate("order").populate("rider", "-password").populate("vendor_price")
     if (calendar) {
       return res.json({
         error: false,

@@ -1,5 +1,5 @@
 const express = require('express');
-const { handleSignIn, handleSignup, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup } = require('../controller/Restaurant');
+const { handleSignIn, handleSignup, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup, updateRestaurant } = require('../controller/Restaurant');
 const router = express.Router();
 const restaurant = require('../middleware/Restaurant')
 const admin = require('../middleware/Admin')
@@ -17,6 +17,7 @@ router.get('/all', getAllRestaurants);
 router.get('/group', getRestaurantsByGroup);
 
 router.patch('/update', restaurant, updateRestaurantByToken);
+router.patch('/admin/update/:_id', admin, updateRestaurant);
 
 router.patch('/enable', admin, enableRestaurant);
 

@@ -31,8 +31,7 @@ const Ingredients = new mongoose.Schema({
 	restaurant: {
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "restaurants",
-		required: true
-	}
+	},
 }, {timestamps: true})
 
 
