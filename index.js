@@ -7,6 +7,7 @@ const restaurantRouter = require('./routes/Restaurant');
 const programRouter = require('./routes/Program');
 const mealRouter = require('./routes/Meal');
 const adminRouter = require('./routes/Admin');
+const managerRouter = require('./routes/Manager');
 const riderRouter = require('./routes/Rider');
 const restaurantCategoryRouter = require('./routes/RestaurantCategory');
 const ingredientsRouter = require('./routes/Ingredients');
@@ -26,6 +27,7 @@ app.use(cors({
 }))
 
 app.use("/admin", adminRouter);
+app.use("/manager", managerRouter);
 app.use("/rider", riderRouter);
 app.use("/customer", customerRouter);
 app.use("/restaurant", restaurantRouter);
