@@ -6,9 +6,9 @@ const TicketSchema = new mongoose.Schema({
 		ref: "customers",
 		required: true
 	},
-	order:{
+	calendar:{
 		type: mongoose.SchemaTypes.ObjectId,
-		ref: "meals"
+		ref: "calendars"
 	},
 	time_stamp: {
 		type: Number,
@@ -25,4 +25,4 @@ const TicketSchema = new mongoose.Schema({
 	}
 })
 
-module.exports = mongoose.model('tickets', TicketSchema);
+module.exports = mongoose.model('tickets_customer', TicketSchema);

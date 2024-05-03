@@ -2,7 +2,7 @@ const Ticket = require("../model/Tickets")
 
 const createTicket = async (req, res) => {
 	try {
-		const newTicket = new Ticket(req.body);
+		const newTicket = new Ticket({...req.body, customers: req.customer._id});
 		const savedTicket = await newTicket.save()
 		return res.json({
 			error: false,
@@ -21,7 +21,7 @@ const updateTicket = async (req, res) => {
 	try {
 		const ticket = await Ticket.findByIdAndUpdate(req.params._id, req.body, {
 			returnOriginal: false
-		}).populate("customers", ).populate("order")
+		}).populate("customers", ).populate("calendar")
 		return res.json({
 			error: false,
 			message: "Updated Successfully",
@@ -37,7 +37,7 @@ const updateTicket = async (req, res) => {
 
 const getTickets = async (req, res) => {
 	try {
-		const tickets = await Ticket.find().populate("customers", ).populate("order")
+		const tickets = await Ticket.find().populate("customers", ).populate("calendar")
 		return res.json({
 			error: false,
 			message: "Fetched Successfully",
@@ -53,7 +53,7 @@ const getTickets = async (req, res) => {
 
 const getTicket = async (req, res) => {
 	try {
-		const tickets = await Ticket.findById(req.params._id).populate("customers", ).populate("order")
+		const tickets = await Ticket.findById(req.params._id).populate("customers", ).populate("calendar")
 		return res.json({
 			error: false,
 			message: "Fetched Successfully",
