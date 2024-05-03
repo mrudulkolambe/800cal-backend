@@ -6,11 +6,6 @@ const TicketSchema = new mongoose.Schema({
 		ref: "customers",
 		required: true
 	},
-	amount: {
-		type: Number,
-		default: 0,
-		required: true
-	},
 	order:{
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "meals"
