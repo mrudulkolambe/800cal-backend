@@ -3,7 +3,7 @@ const Ticket = require("../model/Tickets")
 const createTicket = async (req, res) => {
 	try {
 		const newTicket = new Ticket(req.body);
-		const savedTicket = await newTicket.save().populate("customers", ).populate("order")
+		const savedTicket = await newTicket.save()
 		return res.json({
 			error: false,
 			message: "Created Successfully",
