@@ -1,6 +1,6 @@
 const express = require("express");
 const handleCustomer = require("../middleware/Customer");
-const { createTicket, getTickets, getTicket, updateTicket } = require("../controller/Ticket");
+const { createTicket, getTickets, getTicket, updateTicket } = require("../controller/Tickets");
 const handleAdmin = require("../middleware/Admin");
 const router = express.Router();
 
