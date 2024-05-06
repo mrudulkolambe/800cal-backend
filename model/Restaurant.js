@@ -108,7 +108,7 @@ const Restaurant = new mongoose.Schema({
 	},
 	agreement: {
 		type: String,
-		required: true
+		required: false
 	},
 	companyname: {
 		type: String,
