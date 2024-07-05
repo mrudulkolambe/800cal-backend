@@ -1,22 +1,30 @@
-const express = require('express');
-const { handleSignIn, handleSignup, getCustomerProfileByToken, updateCustomerByToken, getCustomers, resetPassword, getCustomerById } = require('../controller/Customer');
+const express = require("express");
+const {
+  handleSignIn,
+  handleSignup,
+  getCustomerProfileByToken,
+  updateCustomerByToken,
+  getCustomers,
+  resetPassword,
+  deleteAccountByToken,
+} = require("../controller/Customer");
 const router = express.Router();
-const customer = require("../middleware/Customer")
-const { resetPasswordEmail } = require("../controller/Email")
+const customer = require("../middleware/Customer");
+const { resetPasswordEmail } = require("../controller/Email");
 
 router.post("/signup", handleSignup);
 
-router.post('/signin', handleSignIn);
+router.post("/signin", handleSignIn);
 
-router.get('/profile', customer, getCustomerProfileByToken);
+router.get("/profile", customer, getCustomerProfileByToken);
 
-router.get('/:query', getCustomers);
+router.get("/:query", getCustomers);
 
-router.patch('/update', customer, updateCustomerByToken);
+router.patch("/update", customer, updateCustomerByToken);
 
-router.patch('/forget-password', resetPasswordEmail);
-router.patch('/reset-password', customer, resetPassword);
+router.patch("/forget-password", resetPasswordEmail);
+router.patch("/reset-password", customer, resetPassword);
 
-
+router.delete("/delete-account", customer, deleteAccountByToken);
 
 module.exports = router;

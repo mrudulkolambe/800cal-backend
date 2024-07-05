@@ -327,4 +327,37 @@ const getRestaurantsByGroup = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignup, handleSignIn, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup, updateRestaurant };
+const searchRestaurants = async (req, res) => {
+	try {
+	  const { title, tags, rating } = req.query;
+  
+	  // Build search query
+	  let query = {};
+  
+	  if (title) {
+		query.title = { $regex: title, $options: "i" }; // Case-insensitive search
+	  }
+  
+	  if (tags) {
+		query.tags = { $in: tags.split(",").map((tag) => tag.trim()) };
+	  }
+  
+	  if (rating) {
+		query.rating = parseInt(rating);
+	  }
+  
+	  const restaurants = await Restaurant.find(query);
+	  res.json({
+		error: false,
+		message: "Restaurants fetched successfully",
+		restaurants,
+	  });
+	} catch (error) {
+	  res.status(500).json({
+		error: true,
+		message: error.message,
+	  });
+	}
+  };
+
+module.exports = { handleSignup, handleSignIn, getRestaurantProfileByToken, updateRestaurantByToken, getAllRestaurants, enableRestaurant, suspendRestaurant, getRestaurantDetails, getRestaurantsByGroup, updateRestaurant ,searchRestaurants};
