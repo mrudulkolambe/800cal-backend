@@ -17,7 +17,7 @@ router.post("/signup", handleSignup);
 router.post("/signin", handleSignIn);
 
 router.get("/profile", customer, getCustomerProfileByToken);
-router.get("/delete-account", customer, deleteAccountByToken);
+router.delete("/delete-account", customer, deleteAccountByToken);
 
 router.get("/all", getAllCustomers);
 
