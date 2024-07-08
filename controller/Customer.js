@@ -1,6 +1,7 @@
 const Customer = require("../model/Customer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const TemporaryCustomer = require("../model/TemporaryCustomer");
 
 const transporter = nodemailer.createTransport({
