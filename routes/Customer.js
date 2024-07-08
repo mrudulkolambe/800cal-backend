@@ -7,13 +7,14 @@ const {
   getCustomers,
   resetPassword,
   deleteAccountByToken,
-  handleOtpSignup,
+  verifyOtp,
 } = require("../controller/Customer");
 const router = express.Router();
 const customer = require("../middleware/Customer");
 const { resetPasswordEmail } = require("../controller/Email");
 
-router.post("/signup", handleOtpSignup);
+router.post("/signup", handleSignup);
+router.post("/verify-otp", verifyOtp);
 
 router.post("/signin", handleSignIn);
 
