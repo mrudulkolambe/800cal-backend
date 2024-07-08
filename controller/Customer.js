@@ -36,7 +36,7 @@ const handleSignup = async (req, res) => {
     const existingUser = await TemporaryCustomer.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      await TemporaryCustomer.deleteOne({ email });
     }
 
     // Create a new temporary customer
@@ -56,7 +56,7 @@ const handleSignup = async (req, res) => {
 
     // Send OTP email
     await transporter.sendMail({
-      from: `"YourAppName" <${process.env.SMTP_USER}>`,
+      from: `"800cal" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Verify your email",
       text: `Your OTP is ${otp}`,
@@ -106,8 +106,7 @@ const verifyOtp = async (req, res) => {
     // Create and send JWT
     const token = jwt.sign(
       { _id: newCustomer._id, role: newCustomer.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      process.env.JWT_SECRET
     );
 
     res.status(200).json({ message: "Signup successful", token });
