@@ -1,117 +1,113 @@
 const Customer = require("../model/Customer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-const TemporaryCustomer = require("../model/TemporaryCustomer");
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
-
-// Generate OTP function
-const generateOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
 
 const handleSignup = async (req, res) => {
-  const {
-    username,
-    email,
-    password,
-    phonenumber,
-    firstname,
-    lastname,
-    address,
-  } = req.body;
-  const otp = generateOTP();
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
-
   try {
-    // Check if user already exists in TemporaryCustomer
-    const existingUser = await TemporaryCustomer.findOne({ email });
-
-    if (existingUser) {
-      await TemporaryCustomer.deleteOne({ email });
-    }
-
-    // Create a new temporary customer
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const tempCustomer = new TemporaryCustomer({
+    const {
       username,
+      password,
       email,
-      password: hashedPassword,
       phonenumber,
       firstname,
       lastname,
       address,
-      otp,
-      otpExpiresAt: expiresAt,
+    } = req.body;
+    const customer = await Customer.findOne({
+      username,
     });
-    await tempCustomer.save();
-
-    // Send OTP email
-    await transporter.sendMail({
-      from: `"800cal" <${process.env.SMTP_USER}>`,
-      to: email,
-      subject: "Verify your email",
-      text: `Your OTP is ${otp}`,
-      html: `<p>Your OTP is <strong>${otp}</strong></p>`,
-    });
-
-    res.status(200).json({
-      message: "OTP sent to your email",
-      customerId: tempCustomer._id,
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const verifyOtp = async (req, res) => {
-  const { customerId, otp } = req.body;
-
-  try {
-    // Find the temporary customer
-    const tempCustomer = await TemporaryCustomer.findById(customerId);
-
-    if (!tempCustomer) {
-      return res.status(400).json({ error: "Invalid request" });
+    if (customer) {
+      return res.json({
+        error: true,
+        message: "User already exists!",
+      });
+    } else {
+      if (req.body.referredby) {
+        const referreduser = await Customer.findOne({
+          referralcode: req.body.referredby,
+        });
+        if (referreduser) {
+          const data = await Customer.findOneAndUpdate(
+            { _id: referreduser._id },
+            {
+              $inc: { referralpoints: 100 },
+            },
+            { returnOriginal: false }
+          );
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, salt);
+          const newcustomer = new Customer({
+            ...req.body,
+            password: hashedPassword,
+          });
+          newcustomer.referralcode = `${newcustomer.username.slice(
+            0,
+            4
+          )}${newcustomer._id.toString().slice(20)}`;
+          const savedCustomer = await newcustomer.save();
+          const token = await jwt.sign(
+            {
+              _id: savedCustomer._id,
+              role: savedCustomer.role,
+            },
+            process.env.JWT_SECRET
+          );
+          if (savedCustomer) {
+            return res.json({
+              error: false,
+              message: "Signup Successful!",
+              token: token,
+            });
+          } else {
+            return res.json({
+              error: true,
+              message: "Something went wrong!",
+            });
+          }
+        } else {
+          return res.json({
+            error: true,
+            message: "Invalid Referral Code",
+          });
+        }
+      } else {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const newcustomer = new Customer({
+          ...req.body,
+          password: hashedPassword,
+        });
+        newcustomer.referralcode = `${newcustomer.username.slice(
+          0,
+          4
+        )}${newcustomer._id.toString().slice(20)}`;
+        const savedCustomer = await newcustomer.save();
+        const token = await jwt.sign(
+          {
+            _id: savedCustomer._id,
+            role: savedCustomer.role,
+          },
+          process.env.JWT_SECRET
+        );
+        if (savedCustomer) {
+          return res.json({
+            error: false,
+            message: "Signup Successful!",
+            token: token,
+          });
+        } else {
+          return res.json({
+            error: true,
+            message: "Something went wrong!",
+          });
+        }
+      }
     }
-
-    // Check if OTP is valid and not expired
-    if (tempCustomer.otp !== otp || new Date() > tempCustomer.otpExpiresAt) {
-      return res.status(400).json({ error: "Invalid or expired OTP" });
-    }
-
-    // Move customer data to the Customer collection
-    const newCustomer = new Customer({
-      username: tempCustomer.username,
-      email: tempCustomer.email,
-      password: tempCustomer.password,
-      phonenumber: tempCustomer.phonenumber,
-      firstname: tempCustomer.firstname,
-      lastname: tempCustomer.lastname,
-      address: tempCustomer.address,
-    });
-    await newCustomer.save();
-
-    // Remove temporary customer
-    await TemporaryCustomer.deleteOne({ _id: customerId });
-
-    // Create and send JWT
-    const token = jwt.sign(
-      { _id: newCustomer._id, role: newCustomer.role },
-      process.env.JWT_SECRET
-    );
-
-    res.status(200).json({ message: "Signup successful", token });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    return res.json({
+      error: true,
+      message: error.message,
+    });
   }
 };
 
