@@ -1,4 +1,5 @@
 const Customer = require("../model/Customer");
+const OTP = require("../model/Otp");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -101,6 +102,92 @@ const handleSignup = async (req, res) => {
             message: "Something went wrong!",
           });
         }
+      }
+    }
+  } catch (error) {
+    return res.json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
+const handleOtpSignup = async (req, res) => {
+  try {
+    const {
+      username,
+      password,
+      email,
+      phonenumber,
+      firstname,
+      lastname,
+      address,
+      otp,
+    } = req.body;
+
+    const otpRecord = await OTP.findOne({ email });
+
+    if (!otpRecord) {
+      return res.json({
+        error: true,
+        message: "Invalid or expired OTP",
+      });
+    }
+
+    const isValidOTP = await bcrypt.compare(otp, otpRecord.otp);
+
+    if (!isValidOTP) {
+      return res.json({
+        error: true,
+        message: "Invalid OTP",
+      });
+    }
+
+    const customer = await Customer.findOne({ username });
+
+    if (customer) {
+      return res.json({
+        error: true,
+        message: "User already exists!",
+      });
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const newCustomer = new Customer({
+        ...req.body,
+        password: hashedPassword,
+      });
+
+      newCustomer.referralcode = `${newCustomer.username.slice(
+        0,
+        4
+      )}${newCustomer._id.toString().slice(20)}`;
+
+      const savedCustomer = await newCustomer.save();
+
+      const token = jwt.sign(
+        {
+          _id: savedCustomer._id,
+          role: savedCustomer.role,
+        },
+        process.env.JWT_SECRET
+      );
+
+      if (savedCustomer) {
+        // Clean up OTP record after successful registration
+        await OTP.deleteOne({ email });
+
+        return res.json({
+          error: false,
+          message: "Signup Successful!",
+          token,
+        });
+      } else {
+        return res.json({
+          error: true,
+          message: "Something went wrong!",
+        });
       }
     }
   } catch (error) {
@@ -341,6 +428,7 @@ const deleteAccountByToken = async (req, res) => {
 
 module.exports = {
   handleSignup,
+  handleOtpSignup,
   handleSignIn,
   getCustomerProfileByToken,
   updateCustomerByToken,
